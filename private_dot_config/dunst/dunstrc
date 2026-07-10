@@ -22,7 +22,7 @@ width = (0,300)
 offset = 0x45 # margin from the top (to allow for Polybar)
 
 # Scale factor. It is auto-detected if value is 0.
-scale = 1
+scale = 0
 
 # Show how many messages are currently hidden (because of geometry).
 indicate_hidden = yes
@@ -42,10 +42,10 @@ transparency = 5
 separator_height = 2
 
 # Padding between text and separator.
-padding = 8
+padding = 4
 
 # Horizontal padding.
-horizontal_padding = 8
+horizontal_padding = 4
 
 # Defines width in pixels of frame around the notification window.
 # Set to 0 to disable.
@@ -129,8 +129,8 @@ show_indicators = yes
 icon_position = right
 
 # Scale larger icons down to this size, set to 0 to disable
-min_icon_size = 36
-max_icon_size = 72
+min_icon_size = 32
+max_icon_size = 32
 
 # Enable recursive icon lookup
 enable_recursive_icon_lookup = true
@@ -173,13 +173,13 @@ corner_radius = 10
 [urgency_low]
 background = "#303446"
 foreground = "#c6d0f5"
-timeout = 7
+timeout = 15
 
 
 [urgency_normal]
 background = "#303446"
 foreground = "#c6d0f5"
-timeout = 7
+timeout = 15
 
 
 [urgency_critical]
