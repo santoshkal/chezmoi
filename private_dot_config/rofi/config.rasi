@@ -1,0 +1,18 @@
+configuration {
+    modi: [ drun,run, window, filebrowser, ssh ];
+    filebrowser {
+        directories-first: true;
+        sorting-method:    "name";
+    }
+    show-icons: true;
+    font: "Hack Nerd Font 12";
+    show-icons: true;
+    display-ssh:    "󰣀 ssh:";
+    display-run:    "󱓞 run:";
+    display-drun:   "󰣖 Apps:";
+    display-window: "󱂬 window:";
+    display-combi:  "󰕘 combi:";
+    display-filebrowser: "󰉋 Filebrowser:";
+}
+
+@theme "~/.config/rofi/catppuccin-lavrent-mocha.rasi"

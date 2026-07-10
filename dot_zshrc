@@ -15,6 +15,8 @@ export ZSH="$HOME/.oh-my-zsh"
 
 export PYENV_ROOT="$HOME/.pyenv"
 
+
+
 # --- PATH ---
 path=(
   "$HOME/bin"
@@ -120,6 +122,8 @@ alias k=kubectl
 alias e=eksctl
 alias tm="$HOME/tmux-session.sh && tm"
 alias ls='ls --color'
+alias cz=chezmoi
+alias lz=lazygit
 
 
 ######################################################################
