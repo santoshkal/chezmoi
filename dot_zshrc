@@ -21,10 +21,11 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 
+
 # --- PATH ---
 path=(
   "$HOME/bin"
-  "/opt/nvim-linux64/bin"
+  "/opt/nvim-linux-x86_64/bin"
   "$HOME/.local/bin"
   "$PYENV_ROOT/bin"
   "$HOME/.tmux/plugins/tmux-session-wizard/bin"
