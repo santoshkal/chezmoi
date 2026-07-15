@@ -49,7 +49,7 @@ horizontal_padding = 4
 
 # Defines width in pixels of frame around the notification window.
 # Set to 0 to disable.
-frame_width = 2
+frame_width = 1
 
 # Defines color of the frame around the notification window.
 frame_color =  "#8caaee"
@@ -59,7 +59,7 @@ frame_color =  "#8caaee"
 #  * foreground: use the same color as the foreground;
 #  * frame: use the same color as the frame;
 #  * anything else will be interpreted as a X color.
-separator_color = frame
+separator_color = auto
 
 # Sort messages by urgency.
 sort = yes
@@ -126,7 +126,7 @@ hide_duplicate_count = false
 show_indicators = yes
 
 # Align icons left/right/off
-icon_position = right
+icon_position = left
 
 # Scale larger icons down to this size, set to 0 to disable
 min_icon_size = 32
@@ -136,7 +136,7 @@ max_icon_size = 32
 enable_recursive_icon_lookup = true
 
 # Icon dir (looked in XDG_DATA_HOME/icons)
-icon_theme = Papirus
+icon_theme = Yaru-sage-dark
 
 # Should a notification popped up from history be sticky or timeout
 # as if it would normally do.
@@ -171,13 +171,13 @@ corner_radius = 10
 
 
 [urgency_low]
-background = "#303446"
+background = "#24273a"
 foreground = "#c6d0f5"
 timeout = 15
 
 
 [urgency_normal]
-background = "#303446"
+background = "#24273a"
 foreground = "#c6d0f5"
 timeout = 15
 
