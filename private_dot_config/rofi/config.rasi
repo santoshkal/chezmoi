@@ -5,8 +5,8 @@ configuration {
         sorting-method:    "name";
     }
     show-icons: true;
-    font: "Hack Nerd Font Propo Italic 12";
-    show-icons: true;
+    font: "Hack Nerd Font Propo Italic 11";
+    show-icons: false;
     display-ssh:    "󰣀 ssh:";
     display-run:    "󱓞 run:";
     display-drun:   "󰣖 Apps:";
@@ -15,4 +15,6 @@ configuration {
     display-filebrowser: "󰉋 Filebrowser:";
 }
 
-@theme "~/.config/rofi/catppuccin-lavrent-mocha.rasi"
+@theme "~/.config/rofi/tokyonight.rasi"
+// @theme "~/.config/rofi/catppuccin-lavrent-mocha.rasi"
+

@@ -1,0 +1,33 @@
+.local/share/fonts/Hack:
+  type: archive
+  url: "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip"
+  exact: true
+  stripComponents: 0
+  refreshPeriod: 168h
+.password-store:
+  type: git-repo
+  url: "https://github.com/santoshkal/.password-store"
+.config/tmux/plugins/tmux:
+  type: "archive"
+  url: "https://github.com/tmux-plugins/tpm/archive/refs/tags/v3.1.0.zip"
+  exact: true
+  stripComponents: 1
+.config/tmux/plugins/catppuccin:
+  type: git-repo
+  url: "https://github.com/catppuccin/tmux"
+.oh-my-zsh/custom/plugins/zsh-syntax-highlighting:
+  type: "git-repo"
+  url: "https://github.com/zsh-users/zsh-syntax-highlighting"
+.oh-my-zsh/custom/plugins/zsh-autosuggestions:
+  type: "git-repo"
+  url: "https://github.com/zsh-users/zsh-history-substring-search"
+.oh-my-zsh/custom/plugins/:
+  type: "git-repo"
+  url: "https://github.com/zsh-users/zsh-history-substring-search"
+.oh-my-zsh/custom/plugins/zsh-vi-mode:
+  type: "git-repo"
+  url: "https://github.com/jeffreytse/zsh-vi-mode"
+.oh-my-zsh/custom/plugins/zsh-bat:
+  type: "git-repo"
+  url: "https://github.com/fdellwing/zsh-bat"
+
