@@ -129,6 +129,7 @@ alias tm="$HOME/tmux-session.sh && tm"
 alias ls='ls --color'
 alias cz=chezmoi
 alias lz=lazygit
+alias la='ls -la --color'
 
 
 ######################################################################
