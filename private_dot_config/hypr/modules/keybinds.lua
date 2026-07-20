@@ -19,7 +19,6 @@ hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("thunderbird"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(bind.scratchpad))
 
 
-
 -- Close Dunst notifications
 hl.bind("CONTROL + K", hl.dsp.exec_cmd("dunstctl close"))
 hl.bind("CONTROL + ALT + K", hl.dsp.exec_cmd("dunstctl close-all"))
