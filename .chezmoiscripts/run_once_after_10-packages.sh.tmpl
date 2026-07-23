@@ -1,0 +1,214 @@
+{{ if .is_arch -}}
+#!/bin/bash
+set -eux
+
+sudo() {
+  if [ "$(id -u)" -eq 0 ]; then
+    "$@"
+  else
+    command sudo "$@"
+  fi
+}
+
+packages=(
+  neovim
+  tmux
+  ripgrep
+  fd
+  fzf
+  bat
+  eza
+  lazygit
+  kubectl
+  helm
+  eksctl
+  aws-cli-v2
+  go
+  nodejs
+  npm
+  python
+  python-pip
+  pyenv
+  docker
+  docker-compose
+  kitty
+  i3
+  i3blocks
+  yazi
+  ghostty
+)
+
+if command -v yay >/dev/null 2>&1; then
+  if [ "$(id -u)" -eq 0 ] && id "_yay" >/dev/null 2>&1; then
+    command sudo -u _yay yay -S --noconfirm --needed "${packages[@]}"
+  else
+    yay -S --noconfirm --needed "${packages[@]}"
+  fi
+fi
+
+if [ "$(id -u)" -eq 0 ] && id "_yay" >/dev/null 2>&1; then
+  userdel -r _yay 2>/dev/null || true
+  rm -f /etc/sudoers.d/_yay 2>/dev/null || true
+fi
+
+{{ else if .is_fedora -}}
+#!/bin/bash
+set -eux
+
+sudo() {
+  if [ "$(id -u)" -eq 0 ]; then
+    "$@"
+  else
+    command sudo "$@"
+  fi
+}
+
+sudo dnf upgrade -y
+
+echo "==> Enabling RPM Fusion repositories..."
+
+sudo dnf install -y \
+  "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
+  "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
+
+echo "==> Refreshing repositories..."
+sudo dnf makecache
+
+echo "==> Installing multimedia codecs..."
+
+sudo dnf install -y libavcodec-freeworld
+
+sudo dnf copr enable -y atim/starship
+sudo dnf copr enable -y sdegler/hyprland
+sudo dnf config-manager --add-repo https://mise.jdx.dev/rpm/mise.repo
+
+if [ ! -f /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:rivenirvana:lazydocker.repo ]; then
+  sudo dnf copr enable -y rivenirvana/lazydocker
+fi
+
+sudo dnf update -y
+
+packages=(
+  curl
+  wget
+  flatpak
+  git
+  util-linux-user
+  openssh-askpass
+  zsh
+  ripgrep
+  patch
+  hyprland
+  hyprpaper
+  hypridle
+  waybar
+  rofi
+  dunst
+  ncdu
+  unzip
+  fontconfig
+  tmux
+  rsync
+  pwgen
+  htop
+  ghostty
+  jq
+  dnf-plugins-core
+  ffmpeg-free
+  fzf
+  starship
+  distrobox
+  neovim
+  nodejs
+  golang
+  gnome-extensions-app
+  mise
+  bsdtar
+  compat-lua-devel-5.1.5
+  git-delta
+  fd-find
+  bat
+  lazydocker
+  zoxide
+  pass
+)
+
+sudo dnf install -y "${packages[@]}"
+
+if [[ ! -f /etc/yum.repos.d/google-chrome.repo ]]; then
+  sudo rpm --import https://dl.google.com/linux/linux_signing_key.pub
+  cat << 'REPO' | sudo tee /etc/yum.repos.d/google-chrome.repo > /dev/null
+[google-chrome]
+name=Google Chrome
+baseurl=https://dl.google.com/linux/chrome/rpm/stable/x86_64
+enabled=1
+gpgcheck=1
+gpgkey=https://dl.google.com/linux/linux_signing_key.pub
+REPO
+  sudo dnf install -y google-chrome-stable
+fi
+
+sudo dnf config-manager -y --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-compose
+sudo systemctl enable docker
+sudo usermod -aG docker "$USER"
+
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install -y flathub com.discordapp.Discord
+flatpak install -y flathub com.slack.Slack
+flatpak install -y flathub com.spotify.Client
+flatpak install -y flathub org.chromium.Chromium
+flatpak install -y flathub org.gimp.GIMP
+flatpak install -y flathub md.obsidian.Obsidian
+
+sudo sed -i -r "s/^installonly_limit=.*$/installonly_limit=8/" /etc/dnf/dnf.conf
+sudo dnf remove -y plocate mlocate 2>/dev/null || true
+sudo rm -rf /var/lib/plocate/
+
+{{ else if .is_ubuntu -}}
+#!/bin/bash
+set -eux
+
+sudo() {
+  if [ "$(id -u)" -eq 0 ]; then
+    "$@"
+  else
+    command sudo "$@"
+  fi
+}
+
+sudo apt update
+sudo env DEBIAN_FRONTEND=noninteractive apt install --yes \
+  neovim \
+  tmux \
+  ripgrep \
+  fd-find \
+  fzf \
+  bat \
+  git \
+  curl \
+  wget \
+  unzip \
+  golang-go \
+  nodejs \
+  npm \
+  python3 \
+  python3-pip \
+  docker.io \
+  docker-compose
+
+if command -v cargo >/dev/null 2>&1; then
+  cargo install --locked eza 2>/dev/null || true
+else
+  echo "Note: eza not installed (cargo not available). Install manually if needed."
+fi
+
+if command -v fdfind >/dev/null 2>&1 && ! command -v fd >/dev/null 2>&1; then
+  sudo ln -sf "$(command -v fdfind)" /usr/local/bin/fd 2>/dev/null || true
+fi
+
+if command -v batcat >/dev/null 2>&1 && ! command -v bat >/dev/null 2>&1; then
+  sudo ln -sf "$(command -v batcat)" /usr/local/bin/bat 2>/dev/null || true
+fi
+
+{{ end -}}

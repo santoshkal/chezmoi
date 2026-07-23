@@ -1,0 +1,35 @@
+#!/bin/bash
+set -eux
+
+git() { command git -c merge.conflictstyle=diff3 "$@"; }
+
+if ! command -v nvim >/dev/null 2>&1; then
+  echo "nvim not found, skipping Mason package installation"
+  exit 0
+fi
+
+nvim --headless "+Lazy! sync" +qa 2>/dev/null || true
+
+pkgs=(
+  pyright
+  gopls
+  clangd
+  lua-language-server
+  rust-analyzer
+  marksman
+  yaml-language-server
+  fixjson
+  dockerfile-language-server
+  prettier
+  stylua
+  isort
+  black
+  ruff
+  yamllint
+)
+
+for pkg in "${pkgs[@]}"; do
+  nvim --headless -c "MasonInstall $pkg" -c "qall" 2>/dev/null || true
+done
+
+echo "Mason packages installed"

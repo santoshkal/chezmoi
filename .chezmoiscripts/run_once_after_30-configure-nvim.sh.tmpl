@@ -1,0 +1,13 @@
+#!/bin/bash
+set -eux
+
+git() { command git -c merge.conflictstyle=diff3 "$@"; }
+
+LAZY_PATH="${HOME}/.local/share/nvim/lazy/lazy.nvim"
+if [ ! -d "$LAZY_PATH" ]; then
+  git clone --filter=blob:none https://github.com/folke/lazy.nvim.git --branch=stable "$LAZY_PATH"
+fi
+
+if command -v nvim >/dev/null 2>&1; then
+  nvim --headless "+Lazy! sync" +qa 2>/dev/null || true
+fi

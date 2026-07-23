@@ -1,11 +1,14 @@
 .local/share/fonts/Hack:
-  type: archive
+  type: "archive"
   url: "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip"
   exact: true
   stripComponents: 0
-  refreshPeriod: 168h
+  refreshPeriod: "168h"
+dotfiles:
+  type: "git-repo"
+  url: "https://github.com/santoshkal/dotfiles"
 .password-store:
-  type: git-repo
+  type: "git-repo"
   url: "https://github.com/santoshkal/.password-store"
 .config/tmux/plugins/tmux:
   type: "archive"
@@ -13,21 +16,38 @@
   exact: true
   stripComponents: 1
 .config/tmux/plugins/catppuccin:
-  type: git-repo
+  type: "git-repo"
   url: "https://github.com/catppuccin/tmux"
+.oh-my-zsh:
+  type: "git-repo"
+  url: "https://github.com/ohmyzsh/ohmyzsh"
+.oh-my-zsh/custom/themes/powerlevel10k:
+  type: "git-repo"
+  url: "https://github.com/romkatv/powerlevel10k"
 .oh-my-zsh/custom/plugins/zsh-syntax-highlighting:
   type: "git-repo"
   url: "https://github.com/zsh-users/zsh-syntax-highlighting"
+.oh-my-zsh/custom/plugins/zsh-completions:
+  type: "git-repo"
+  url: "https://github.com/zsh-users/zsh-completions.git"
+.oh-my-zsh/custom/plugins/zsh-history-substring-search:
+  type: "git-repo"
+  url: "https://github.com/zsh-users/zsh-history-substring-search"
 .oh-my-zsh/custom/plugins/zsh-autosuggestions:
   type: "git-repo"
-  url: "https://github.com/zsh-users/zsh-history-substring-search"
-.oh-my-zsh/custom/plugins/:
-  type: "git-repo"
-  url: "https://github.com/zsh-users/zsh-history-substring-search"
+  url: "https://github.com/zsh-users/zsh-autosuggestions"
 .oh-my-zsh/custom/plugins/zsh-vi-mode:
   type: "git-repo"
   url: "https://github.com/jeffreytse/zsh-vi-mode"
 .oh-my-zsh/custom/plugins/zsh-bat:
   type: "git-repo"
   url: "https://github.com/fdellwing/zsh-bat"
-
+.icons/Bibata-Modern-Ice:
+  type: "archive"
+  url: "https://github.com/ful1e5/Bibata_Cursor/releases/download/v2.0.7/Bibata-Modern-Ice.tar.xz"
+  exact: true
+  stripComponents: 1
+  refreshPeriod: "168h"
+fzf-git:
+  type: "git-repo"
+  url: "https://github.com/junegunn/fzf-git.sh"
