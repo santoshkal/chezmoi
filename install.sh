@@ -35,16 +35,35 @@ if [ -z "${chezmoi}" ]; then
   unset chezmoi_install_script bin_dir
 fi
 
+# If git isn't installed, attempt to install it via the system package manager
+if ! command -v git >/dev/null 2>&1; then
+  log_task "git not found, attempting to install..."
+  if command -v dnf >/dev/null; then
+    dnf install -y git
+  elif command -v apt-get >/dev/null; then
+    apt-get update -qq && apt-get install -y -qq git
+  elif command -v apk >/dev/null; then
+    apk add git
+  elif command -v pacman >/dev/null; then
+    pacman -S --noconfirm git
+  elif command -v zypper >/dev/null; then
+    zypper install -y git
+  else
+    error "git is required. Install git manually and re-run."
+  fi
+fi
+
 # Create a git wrapper for environments with older git (< 2.35) that don't support zdiff3
 GIT_WRAPPER_DIR="$(mktemp -d /tmp/git-wrapper-XXXXXX)"
-cat > "${GIT_WRAPPER_DIR}/git" << 'GITEOF'
+GIT_PATH="$(command -v git)"
+cat > "${GIT_WRAPPER_DIR}/git" << GITEOF
 #!/bin/sh
-exec /usr/bin/git -c merge.conflictstyle=diff3 "$@"
+exec ${GIT_PATH} -c merge.conflictstyle=diff3 "\$@"
 GITEOF
 chmod +x "${GIT_WRAPPER_DIR}/git"
 export PATH="${GIT_WRAPPER_DIR}:${PATH}"
 
-REPO_URL="https://github.com/santoshkal/dotfiles"
+REPO_URL="https://github.com/santoshkal/chezmoi"
 CHEZMOI_SOURCE="${HOME}/.local/share/chezmoi"
 
 # Detect if we're running from within the repo (install.sh inside home/)
