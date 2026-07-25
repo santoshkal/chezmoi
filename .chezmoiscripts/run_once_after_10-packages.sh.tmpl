@@ -78,10 +78,8 @@ echo "==> Installing multimedia codecs..."
 
 sudo dnf install -y libavcodec-freeworld
 
-sudo dnf copr enable -y atim/starship -y
-sudo dnf copr enable atim/lazygit -y
+sudo dnf copr enable  dejan/lazygit -y
 sudo dnf copr enable -y sdegler/hyprland -y
-sudo dnf config-manager addrepo --from-repofile=https://mise.jdx.dev/rpm/mise.repo --overwrite
 
 if [ ! -f /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:rivenirvana:lazydocker.repo ]; then
   sudo dnf copr enable -y rivenirvana/lazydocker
