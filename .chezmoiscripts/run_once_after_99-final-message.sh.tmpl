@@ -1,6 +1,16 @@
 #!/bin/bash
 set -eu
 
+KEY="$HOME/.ssh/github_keys"
+
+if [ -f "$KEY" ]; then
+  if [ -z "${SSH_AUTH_SOCK:-}" ]; then
+    eval "$(ssh-agent -s)" >/dev/null
+  fi
+
+  ssh-add "$KEY" >/dev/null 2>&1 || true
+fi
+
 cat << "EOF"
 
 ######################################################

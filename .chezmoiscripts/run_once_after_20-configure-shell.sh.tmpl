@@ -7,6 +7,6 @@ if [ "$SHELL" != "$(command -v zsh)" ]; then
   if [ -n "${CI:-}" ] || [ -n "${DEVCONTAINER:-}" ] || [ "$(id -u)" -eq 0 ]; then
     echo "Skipping chsh in container/CI/root environment"
   else
-    chsh -s "$(command -v zsh)"
+    sudo usermod --shell "$(command -v zsh)" "$USER"
   fi
 fi
