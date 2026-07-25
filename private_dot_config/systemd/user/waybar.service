@@ -1,0 +1,15 @@
+[Unit]
+Description=Waybar status bar with auto-reload
+Documentation=man:waybar(5)
+PartOf=graphical-session.target
+After=graphical-session.target
+Requisite=graphical-session.target
+
+[Service]
+Type=exec
+ExecStart=/home/santosh/.config/waybar/auto-reload.sh
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=graphical-session.target

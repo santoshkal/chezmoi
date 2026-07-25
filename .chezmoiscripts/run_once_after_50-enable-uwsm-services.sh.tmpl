@@ -1,0 +1,19 @@
+{{ if .is_fedora -}}
+#!/bin/bash
+set -euo pipefail
+
+SERVICES="waybar dunst hyprpaper hypridle hyprpolkitagent"
+
+systemctl --user daemon-reload
+
+for s in $SERVICES; do
+  if systemctl --user cat "$s" &>/dev/null; then
+    echo "Enabling and starting $s ..."
+    systemctl --user enable --now "$s" 2>&1 || true
+  else
+    echo "Skipping $s (unit not found)"
+  fi
+done
+
+echo "Done. Check status with: systemctl --user status $SERVICES"
+{{ end -}}

@@ -5,8 +5,10 @@
 
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
 
-hl.env("XCURSOR_SIZE", "24")
-hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("XCURSOR_SIZE", "22")
+-- hl.env("XCURSOR_THEME", "Bibata-Modern-Ice")
+hl.env("GTK_THEME", "Nordic-darker")
+hl.env("HYPRCURSOR_SIZE", "22")
 hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 
 -- [2] MONITORS

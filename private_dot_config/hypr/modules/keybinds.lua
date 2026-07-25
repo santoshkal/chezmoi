@@ -17,7 +17,13 @@ hl.bind(mainMod .. " + F", hl.dsp.exec_cmd(bind.fileManager))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(bind.browser))
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("thunderbird"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(bind.scratchpad))
-
+--
+-- PrintScreen key pressed -> the currently focused monitor (the one containing the cursor) is captured, and the Flameshot GUI is brought up for annotating, cropping, etc.
+hl.bind("Print", function()
+  local mon = hl.get_active_monitor()
+  local n = mon and mon.id or 0
+  hl.exec_cmd("flameshot screen --number " .. n .. " --edit")
+end)
 
 -- Close Dunst notifications
 hl.bind("CONTROL + K", hl.dsp.exec_cmd("dunstctl close"))
