@@ -15,14 +15,14 @@ hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(bind.terminal))
 hl.bind(mainMod .. " + F", hl.dsp.exec_cmd(bind.fileManager))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(bind.browser))
-hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("thunderbird"))
+hl.bind(mainMod .. " + M", hl.dsp.exec_cmd(bind.mail))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(bind.scratchpad))
 --
 -- PrintScreen key pressed -> the currently focused monitor (the one containing the cursor) is captured, and the Flameshot GUI is brought up for annotating, cropping, etc.
 hl.bind("Print", function()
-  local mon = hl.get_active_monitor()
-  local n = mon and mon.id or 0
-  hl.exec_cmd("flameshot screen --number " .. n .. " --edit")
+	local mon = hl.get_active_monitor()
+	local n = mon and mon.id or 0
+	hl.exec_cmd("flameshot screen --number " .. n .. " --edit")
 end)
 
 -- Close Dunst notifications
@@ -31,8 +31,10 @@ hl.bind("CONTROL + ALT + K", hl.dsp.exec_cmd("dunstctl close-all"))
 
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 -- closeWindowBind:set_enabled(false)
-hl.bind(secondMod .. " + M",
-  hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
+hl.bind(
+	secondMod .. " + M",
+	hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'")
+)
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 --
 -- Toggle window maximized
@@ -54,20 +56,18 @@ hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }))
 hl.bind(secondMod .. " + left", hl.dsp.window.cycle_next({ next = false }))
 hl.bind(secondMod .. " + right", hl.dsp.window.cycle_next())
 
-
 --  moving a window to a special workspace (scratchpad)
 -- hl.bind(secondMod .. "+ S", hl.dsp.window.move({ workspace = "special:scratchpad" }))
 -- To see the hidden window and workspace (scratchpad)
 -- hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("scratchpad"))
 
-
 -- Switch workspaces with mainMod + [0-9]
 -- Move active window to a workspace with mainMod + SHIFT + [0-9]
 for i = 1, 10 do
-  local key = i % 10 -- 10 maps to key 0
-  hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
-  -- Move Active window to Workspace
-  hl.bind(secondMod .. " + " .. key, hl.dsp.window.move({ workspace = i }))
+	local key = i % 10 -- 10 maps to key 0
+	hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
+	-- Move Active window to Workspace
+	hl.bind(secondMod .. " + " .. key, hl.dsp.window.move({ workspace = i }))
 end
 
 -- Example special workspace (scratchpad)
@@ -83,14 +83,26 @@ hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Laptop multimedia keys for volume and LCD brightness
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
-  { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),
-  { locked = true, repeating = true })
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
-  { locked = true, repeating = true })
-hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
-  { locked = true, repeating = true })
+hl.bind(
+	"XF86AudioRaiseVolume",
+	hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
+	{ locked = true, repeating = true }
+)
+hl.bind(
+	"XF86AudioLowerVolume",
+	hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),
+	{ locked = true, repeating = true }
+)
+hl.bind(
+	"XF86AudioMute",
+	hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
+	{ locked = true, repeating = true }
+)
+hl.bind(
+	"XF86AudioMicMute",
+	hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
+	{ locked = true, repeating = true }
+)
 hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"), { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"), { locked = true, repeating = true })
 

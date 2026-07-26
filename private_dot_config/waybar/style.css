@@ -5,31 +5,32 @@
 @define-color active-fg #b4befe;
 
 * {
-    font-family: Mononoki Nerd Font;
-    font-size: 14px;
-    padding: 0;
-    margin: 0;
+  font-family: Mononoki Nerd Font;
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
 }
 
 #waybar {
-    color: @foreground;
-    background-color: @background;
+  color: @foreground;
+  background-color: @background;
 }
 
 #workspaces button {
-    padding-left: 3px;
-    padding-right: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+  font-weight: 300;
 }
 
 #workspaces button.empty {
-    color: @foreground-inactive;
+  color: @foreground-inactive;
 }
 
 #workspaces button.active {
-    background-color: @background-alt;
-    color: @active-fg;
-    font-weight: 700;
-    border-radius: 3px;
+  background-color: @background-alt;
+  color: @active-fg;
+  font-weight: 700;
+  border-radius: 3px;
 }
 
 #wireplumber,
@@ -37,38 +38,37 @@
 #tray,
 #group-usage,
 #group-net {
-    background-color: @background-alt;
-    border-radius: 3px;
-    padding-left: 0.5em;
-    padding-right: 0.6em;
-    margin-left: 0.3em;
+  background-color: @background-alt;
+  border-radius: 3px;
+  padding-left: 0.5em;
+  padding-right: 0.6em;
+  margin-left: 0.3em;
 }
 
 #battery {
-    margin-right: 0.3em;
-    padding-left: 4px;
-    padding-right: 10px;
+  margin-right: 0.3em;
+  padding-left: 4px;
+  padding-right: 10px;
 }
 #network {
-    margin-right: 0.3em;
-    color: darkgreen;
-    padding-left: 4px;
-    padding-right: 18px;
+  margin-right: 0.3em;
+  color: darkgreen;
+  padding-left: 4px;
+  padding-right: 18px;
 }
 
 #bluetooth {
-    margin-right: 0.6em;
-    padding-left: 0.2em;
-    padding-right: 0.2em;
+  margin-right: 0.6em;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
 }
 #memory {
-    margin-right: 0.6em;
-    padding-left: 0.2em;
-    padding-right: 0.2em;
+  margin-right: 0.6em;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
 }
 #cpu {
-    margin-right: 0.6em;
-    padding-left: 0.2em;
-    padding-right: 0.2em;
+  margin-right: 0.6em;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
 }
-

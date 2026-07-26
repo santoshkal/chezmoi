@@ -1,0 +1,3 @@
+export HYPRLAND_TRACE=1
+export HYPRCURSOR_THEME="Bibata-Modern-Classic"
+export HYPRCURSOR_SIXE=20
