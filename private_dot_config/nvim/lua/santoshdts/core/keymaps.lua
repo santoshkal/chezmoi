@@ -15,24 +15,6 @@ keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" })
 keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" })
 
--- ──────────────────────
--- Window Management
--- ──────────────────────
-
--- ──────────────────────
--- Obsidian
--- ──────────────────────
--- keymap.set("n", "<leader>oo", ":Obsidian<cr>", { desc = "[O]pen [O]bsidian " })
--- keymap.set("n", "<leader>on", ":ObsidianNewFromTemplate<cr>", { desc = "[O]bsidian [N]ewNote from Template" })
--- keymap.set("n", "<leader>os", ":ObsidianSearch<cr>", { desc = "[O]bsidian [S]earch" })
--- keymap.set("n", "<leader>ow", ":ObsidianQuickSwitch<cr>", { desc = "[O]bsidian [S]witch" })
--- keymap.set("n", "<leader>obl", ":ObsidianBacklinks<cr>", { desc = "[O]bsidian [B]ackLinks" })
--- keymap.set("n", "<leader>ot", ":ObsidianTemplate<cr``>", { desc = "[O]bsidian [T]emplates" })
--- keymap.set("n", "<leader>ol", ":ObsidianLink<cr>", { desc = "[O]bsidian [L]ink" })
--- keymap.set("n", "<leader>onl", ":ObsidianLinkNew<cr>", { desc = "[O]bsidian [L]inkNew" })
--- keymap.set("n", "<leader>ogl", ":ObsidianLinks<cr>", { desc = "[O]bsidian [G]etLinks" })
--- keymap.set("n", "<leader>oc", ":ObsidianTOC<cr>", { desc = "[O]bsidian [T]oC" })
---
 -- Split windows
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
@@ -44,6 +26,13 @@ keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
 keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
 
 -- ──────────────────────
+-- Buffer Management
+-- ──────────────────────
+vim.keymap.set("n", "<Tab>", ":bn<CR>", { silent = true })
+vim.keymap.set("n", "<S-Tab>", ":bp<CR>", { silent = true })
+vim.keymap.set("n", "<leader>bd", ":bd<CR>", { silent = true })
+-- ──────────────────────
+
 -- Tab Management
 -- ──────────────────────
 
@@ -60,6 +49,24 @@ keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer
 -- Move selected line(s) up/down in visual mode
 keymap.set("v", "J", ":m '>+1<CR>gv=gv") -- Move selection down
 keymap.set("v", "K", ":m '>-2<CR>gv=gv") -- Move selection up
+
+-- Obsidian Keymaps
+vim.keymap.set("n", "<leader>oo", "<cmd>Obsidian open<CR>", { desc = "Open on App" })
+vim.keymap.set("n", "<leader>os", "<cmd>Obsidian search<CR>", { desc = "Obsidian Search" })
+vim.keymap.set("n", "<leader>on", "<cmd>Obsidian new<CR>", { desc = "New Note" })
+vim.keymap.set("n", "<leader>oN", "<cmd>Obsidian new_from_template<CR>", { desc = "New Note (Template)" })
+vim.keymap.set("n", "<leader>o<space>", "<cmd>Obsidian quick_switch<CR>", { desc = "Find Files" })
+vim.keymap.set("n", "<leader>ob", "<cmd>Obsidian backlinks<CR>", { desc = "Backlinks" })
+vim.keymap.set("n", "<leader>ot", "<cmd>Obsidian tags<CR>", { desc = "Tags" })
+vim.keymap.set("n", "<leader>oT", "<cmd>Obsidian template<CR>", { desc = "Template" })
+vim.keymap.set("v", "<leader>oL", "<cmd>Obsidian link<CR>", { desc = "Link" })
+vim.keymap.set("n", "<leader>oi", "<cmd>Obsidian links<CR>", { desc = "Links" })
+vim.keymap.set("n", "<S-CR>", "<cmd>Obsidian follow_link vsplit<CR>", { desc = "[F]ollow Link in Verticle Split" })
+vim.keymap.set("v", "<leader>oe", "<cmd>Obsidian link_new<CR>", { desc = "Extract and Link New Note" })
+vim.keymap.set("n", "<leader>od", "<cmd>Obsidian workspace DevOps<CR>", { desc = "Switch to [D]evOps Workspace" })
+vim.keymap.set("n", "<leader>ow", "<cmd>Obsidian workspace work<CR>", { desc = "Switch to [W]prk Workspace" })
+vim.keymap.set("n", "<leader>ol", "<cmd>Obsidian workspace<CR>", { desc = "[L]ist Workspaces" })
+vim.keymap.set("n", "<leader>or", "<cmd>Obsidian rename<CR>", { desc = "Rename" })
 
 -- ──────────────────────
 -- Tmux Integration
@@ -85,19 +92,6 @@ keymap.set("n", "<C-u>", "<C-u>zz")
 -- keymap.set("n", "<C-s>", "<cmd>w<cr><cmd>wa<cr>", { desc = "Save all" })
 
 -- ──────────────────────
--- Yank Highlight
--- ──────────────────────
-
--- Highlight text on yank (copy)
-vim.api.nvim_create_autocmd("TextYankPost", {
-	desc = "Highlight when yanking (copying) text",
-	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
-	callback = function()
-		vim.highlight.on_yank()
-	end,
-})
-
--- ──────────────────────
 -- Notifications
 -- ──────────────────────
 
@@ -107,25 +101,36 @@ vim.keymap.set("n", "<Esc>", function()
 end, { desc = "dismiss notify popup and clear hlsearch" })
 
 -- ──────────────────────
--- Quickfix & Location List
+-- Built-in Plugins
 -- ──────────────────────
 
--- Ensure Enter works in quickfix and location list windows
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "qf" },
-	callback = function(event)
-		-- Jump to the item under cursor and close the quickfix/location list
-		vim.keymap.set("n", "<CR>", function()
-			local is_loclist = vim.fn.getloclist(0, { filewinid = 1 }).filewinid ~= 0
-			local line = vim.fn.line(".")
+-- Toggle builtin undotree
+vim.keymap.set("n", "<leader>u", function()
+	vim.cmd.packadd("nvim.undotree")
+	require("undotree").open()
+end, { desc = "Toggle builtin Undotree" })
 
-			if is_loclist then
-				vim.cmd(string.format("ll %d", line))
-				vim.cmd("lclose")
-			else
-				vim.cmd(string.format(".cc"))
-				vim.cmd("cclose")
-			end
-		end, { buffer = event.buf, desc = "Jump to item and close list" })
-	end,
-})
+-- ──────────────────────
+-- Terminal
+-- ──────────────────────
+
+-- Easily hit escape in terminal mode
+vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Exit terminal mode" })
+
+-- Open a terminal at the bottom of the screen with a fixed height
+vim.keymap.set("n", ",st", function()
+	vim.cmd("new")
+	vim.cmd("wincmd J")
+	vim.api.nvim_win_set_height(0, 6)
+	vim.wo.winfixheight = true
+	vim.cmd("term")
+end, { desc = "Open terminal at bottom" })
+
+-- ──────────────────────
+-- Window Navigation
+-- ──────────────────────
+
+vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
+vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
+vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })

@@ -1,4 +1,1 @@
-return {
-  "stevearc/dressing.nvim",
-  event = "VeryLazy",
-}
+-- dressing.nvim uses defaults, no explicit setup needed

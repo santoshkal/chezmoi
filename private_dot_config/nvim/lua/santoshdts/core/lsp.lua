@@ -30,6 +30,7 @@ local lsp_servers = {
 	"lua_ls",
 	"pyright",
 	"dockerls",
+	"nil_ls",
 }
 
 -- Apply configurations from individual LSP config files

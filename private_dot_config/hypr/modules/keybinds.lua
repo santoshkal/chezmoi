@@ -1,4 +1,3 @@
--- [8] KEYBINDINGS
 ---------------------
 ---- KEYBINDINGS ----
 ---------------------
@@ -18,24 +17,46 @@ hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(bind.browser))
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd(bind.mail))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(bind.scratchpad))
 --
+-- Idle and Power management
+hl.bind(secondMod .. " + M", hl.dsp.exec_cmd("uwsm stop"))
+hl.bind(secondMod .. " + L", hl.dsp.exec_cmd("loginctl lock-session"))
+hl.bind(secondMod .. " + S", hl.dsp.exec_cmd("systemctl suspend"))
+hl.bind(secondMod .. " + R", hl.dsp.exec_cmd("systemctl reboot"))
+-- hl.bind(secondMod .. " + P", hl.dsp.exec_cmd("systemctl poweroff"))
+
 -- PrintScreen key pressed -> the currently focused monitor (the one containing the cursor) is captured, and the Flameshot GUI is brought up for annotating, cropping, etc.
 hl.bind("Print", function()
 	local mon = hl.get_active_monitor()
 	local n = mon and mon.id or 0
-	hl.exec_cmd("flameshot screen --number " .. n .. " --edit")
+	hl.exec_cmd("uwsm app -- flameshot screen --number " .. n .. " --edit")
 end)
 
+-- Open Cliphist history
+hl.bind(
+	mainMod .. " + V",
+	hl.dsp.exec_cmd([[
+selection=$(cliphist list | uwsm app -- rofi -dmenu -i -p "Clipboard") &&
+[ -n "$selection" ] &&
+printf '%s\n' "$selection" | cliphist decode | wl-copy
+]])
+)
+-- Clear cliphist DB
+hl.bind(
+	secondMod .. "+ V",
+	hl.dsp.exec_cmd([[
+printf "No\nYes" |
+uwsm app -- rofi -dmenu -i -p "Clear clipboard history?" |
+grep -qx "Yes" &&
+cliphist wipe
+]])
+)
 -- Close Dunst notifications
 hl.bind("CONTROL + K", hl.dsp.exec_cmd("dunstctl close"))
 hl.bind("CONTROL + ALT + K", hl.dsp.exec_cmd("dunstctl close-all"))
 
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 -- closeWindowBind:set_enabled(false)
-hl.bind(
-	secondMod .. " + M",
-	hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'")
-)
-hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
+-- hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 --
 -- Toggle window maximized
 hl.bind(secondMod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized" }))

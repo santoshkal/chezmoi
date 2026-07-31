@@ -9,7 +9,7 @@ M.terminal = "uwsm app -- ghostty"
 M.fileManager = "uwsm app -- nemo"
 M.launcher = "uwsm app -- rofi -show drun -show-icons"
 M.runner = "uwsm app -- rofi -show run"
-M.browser = "uwsm app -- chromium-browser"
+M.browser = "uwsm app -- helium"
 M.mail = "uwsm app -- thunderbird"
 M.scratchpad = "uwsm app -- gedit"
 
@@ -19,9 +19,9 @@ M.scratchpad = "uwsm app -- gedit"
 -- Or execute your favorite apps at launch like this:
 --
 hl.on("hyprland.start", function()
-	hl.exec_cmd("uwsm app -- hyprpaper")
-	hl.exec_cmd("uwsm app -- hypridle")
-	hl.exec_cmd("systemctl --user start hyprpolkitagent")
+	hl.exec_cmd("uwsm app -- wl-paste --type text --watch cliphist store")
+	hl.exec_cmd("uwsm app -- wl-paste --type image --watch cliphist store")
+	-- hl.exec_cmd("systemctl --user start hyprpolkitagent")
 end)
 
 return M
