@@ -1,0 +1,1 @@
+-- vim-tmux-navigator's plugin/ file handles all key mappings and commands
