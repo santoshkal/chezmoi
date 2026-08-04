@@ -7,9 +7,6 @@
 dotfiles:
   type: "git-repo"
   url: "https://github.com/santoshkal/dotfiles"
-.password-store:
-  type: "git-repo"
-  url: "https://github.com/santoshkal/.password-store"
 .config/tmux/plugins/tmux:
   type: "archive"
   url: "https://github.com/tmux-plugins/tpm/archive/refs/tags/v3.1.0.zip"
