@@ -1,7 +1,15 @@
 #!/bin/sh
 
+echo ""
+echo "🔐 Preparing private SSH key..."
+echo ""
+
 if [ ! -f "${HOME}/.config/chezmoi/key.txt" ]; then
+    echo "🗝️  Decrypting age-encrypted key..."
     mkdir -p "${HOME}/.config/chezmoi"
     chezmoi age decrypt --output "${HOME}/.config/chezmoi/key.txt" --passphrase "{{ .chezmoi.sourceDir }}/key.txt.age"
     chmod 600 "${HOME}/.config/chezmoi/key.txt"
+    echo "✅ Key decrypted to ${HOME}/.config/chezmoi/key.txt"
+else
+    echo "✅ Key already present, skipping."
 fi

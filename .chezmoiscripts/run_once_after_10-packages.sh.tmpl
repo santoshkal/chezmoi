@@ -10,6 +10,10 @@ sudo() {
   fi
 }
 
+echo ""
+echo "📦 STEP 2/6: Installing packages (Arch)..."
+echo ""
+
 packages=(
   neovim
   tmux
@@ -51,6 +55,9 @@ if [ "$(id -u)" -eq 0 ] && id "_yay" >/dev/null 2>&1; then
   rm -f /etc/sudoers.d/_yay 2>/dev/null || true
 fi
 
+echo "✅ Packages done."
+echo ""
+
 {{ else if .is_fedora -}}
 #!/bin/bash
 set -euo pipefail
@@ -63,6 +70,11 @@ sudo() {
   fi
 }
 
+echo ""
+echo "📦 STEP 2/6: Installing packages (Fedora)..."
+echo ""
+
+echo "🔄 Upgrading system..."
 sudo dnf upgrade -y
 
 echo "==> Enabling RPM Fusion repositories..."
@@ -78,15 +90,15 @@ echo "==> Installing multimedia codecs..."
 
 sudo dnf install -y libavcodec-freeworld
 
+echo "🔧 Enabling COPR repositories..."
 sudo dnf copr enable  dejan/lazygit -y
 sudo dnf copr enable -y sdegler/hyprland -y
-
-if [ ! -f /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:rivenirvana:lazydocker.repo ]; then
-  sudo dnf copr enable -y rivenirvana/lazydocker
-fi
+sudo dnf copr enable scottames/ghostty
+sudo dnf copr enable imput/helium
 
 sudo dnf update -y
 
+echo "🚀 Installing packages..."
 packages=(
   curl
   wget
@@ -104,6 +116,7 @@ packages=(
   hyprland
   hyprpaper
   hypridle
+  hyprlock
   waybar
   rofi
   dunst
@@ -126,21 +139,22 @@ packages=(
   git-delta
   fd-find
   bat
-  lazydocker
+  lazygit
   zoxide
+  helium-bin
+  ghostty
   pass
 )
 
 sudo dnf install -y "${packages[@]}"
 
+echo "🎈 Installing tmuxinator (ruby gem)..."
 # Install tmuxinator
 sudo dnf install ruby
 gem install tmuxinator
 
-# Install Ghostty
-sudo dnf copr enable scottames/ghostty
-sudo dnf install ghostty
 
+echo "🐳 Setting up Docker..."
 # Install Docker
 sudo dnf config-manager addrepo \
   --from-repofile=https://download.docker.com/linux/fedora/docker-ce.repo \
@@ -159,11 +173,15 @@ sudo usermod -aG docker "$USER"
 
 
 # Flatpaks
+echo "🧊 Installing Flatpak apps..."
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 flatpak install -y flathub com.discordapp.Discord
 flatpak install -y flathub com.slack.Slack
 flatpak install -y flathub org.chromium.Chromium
 flatpak install -y flathub org.gimp.GIMP
+
+echo "✅ Packages done."
+echo ""
 
 {{ else if .is_ubuntu -}}
 #!/bin/bash
@@ -176,6 +194,10 @@ sudo() {
     command sudo "$@"
   fi
 }
+
+echo ""
+echo "📦 STEP 2/6: Installing packages (Ubuntu/Debian)..."
+echo ""
 
 sudo apt update
 sudo env DEBIAN_FRONTEND=noninteractive apt install --yes \
@@ -210,5 +232,8 @@ fi
 if command -v batcat >/dev/null 2>&1 && ! command -v bat >/dev/null 2>&1; then
   sudo ln -sf "$(command -v batcat)" /usr/local/bin/bat 2>/dev/null || true
 fi
+
+echo "✅ Packages done."
+echo ""
 
 {{ end -}}

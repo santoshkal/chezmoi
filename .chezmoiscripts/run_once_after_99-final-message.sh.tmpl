@@ -1,9 +1,14 @@
 #!/bin/bash
 set -eu
 
+echo ""
+echo "🎉 STEP 6/6: Finalizing..."
+echo ""
+
 KEY="$HOME/.ssh/github_keys"
 
 if [ -f "$KEY" ]; then
+  echo "🔑 Adding GitHub SSH key to agent..."
   if [ -z "${SSH_AUTH_SOCK:-}" ]; then
     eval "$(ssh-agent -s)" >/dev/null
   fi
@@ -14,7 +19,7 @@ fi
 cat << "EOF"
 
 ######################################################
-#  Dotfiles applied successfully!                    #
+#   ✅ Dotfiles applied successfully!                #
 #                                                    #
 #  To complete setup:                                #
 #    1. Restart your terminal or run: exec zsh       #

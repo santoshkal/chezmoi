@@ -1,0 +1,73 @@
+{{ if and .is_fedora .chassisType -}}
+{{- if eq .chassisType "notebook" }}
+#!/bin/bash
+set -euo pipefail
+
+sudo() {
+  if [ "$(id -u)" -eq 0 ]; then
+    "$@"
+  else
+    command sudo "$@"
+  fi
+}
+
+echo ""
+echo "🖥️  STEP: Configuring NVIDIA (hybrid graphics)..."
+echo ""
+
+if ! lspci 2>/dev/null | grep -qi nvidia; then
+  echo "ℹ️  No NVIDIA GPU detected. Skipping NVIDIA setup."
+  exit 0
+fi
+
+echo "✅ Laptop with NVIDIA GPU detected. Proceeding..."
+
+echo "🛠️  Installing NVIDIA driver packages..."
+sudo dnf install -y \
+  akmod-nvidia \
+  xorg-x11-drv-nvidia-cuda \
+  nvidia-vaapi-driver \
+  egl-wayland \
+  xorg-x11-server-Xwayland
+
+echo "🔑 Checking Secure Boot state..."
+if mokutil --sb-state 2>/dev/null | grep -qi "enabled"; then
+  echo "⚠️  Secure Boot is ENABLED. The akmod-nvidia module must be signed."
+  echo "   Enroll the MOK key and reboot before this takes effect:"
+  echo "   sudo mokutil --import /etc/pki/akmods/certs/public_key.der"
+else
+  echo "✅ Secure Boot is disabled - no MOK enrollment needed."
+fi
+
+echo "⚙️  Enabling DRM modesetting..."
+echo "options nvidia_drm modeset=1" | sudo tee /etc/modprobe.d/nvidia.conf >/dev/null
+
+echo "🧩 Adding nvidia-drm.modeset=1 to kernel cmdline..."
+if [ -f /etc/kernel/cmdline ]; then
+  if ! grep -q "nvidia-drm.modeset=1" /etc/kernel/cmdline; then
+    echo "nvidia-drm.modeset=1" | sudo tee -a /etc/kernel/cmdline >/dev/null
+  fi
+else
+  sudo grubby --update-kernel=ALL --args="nvidia-drm.modeset=1"
+fi
+
+echo "🔌 Enabling NVIDIA suspend/resume services..."
+sudo systemctl enable nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service 2>/dev/null || true
+
+echo "🧠 Rebuilding initramfs..."
+sudo dracut --force
+
+echo "🌐 Adding NVIDIA environment variables to uwsm env-hyprland..."
+ENV_FILE="$HOME/.config/uwsm/env-hyprland"
+touch "$ENV_FILE"
+if ! grep -q "LIBVA_DRIVER_NAME" "$ENV_FILE"; then
+  echo 'export LIBVA_DRIVER_NAME="nvidia"' >> "$ENV_FILE"
+fi
+if ! grep -q "__GLX_VENDOR_LIBRARY_NAME" "$ENV_FILE"; then
+  echo 'export __GLX_VENDOR_LIBRARY_NAME="nvidia"' >> "$ENV_FILE"
+fi
+
+echo "✅ NVIDIA setup done. Reboot to activate."
+echo ""
+{{- end }}
+{{ end -}}

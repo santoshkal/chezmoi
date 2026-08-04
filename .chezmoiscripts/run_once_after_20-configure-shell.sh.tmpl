@@ -1,12 +1,20 @@
 #!/bin/bash
 set -eux
 
+echo ""
+echo "🐚 STEP 3/6: Configuring shell (zsh)..."
+echo ""
+
 git() { command git -c merge.conflictstyle=diff3 "$@"; }
 
 if [ "$SHELL" != "$(command -v zsh)" ]; then
   if [ -n "${CI:-}" ] || [ -n "${DEVCONTAINER:-}" ] || [ "$(id -u)" -eq 0 ]; then
     echo "Skipping chsh in container/CI/root environment"
   else
+    echo "Setting default shell to zsh..."
     sudo usermod --shell "$(command -v zsh)" "$USER"
+    echo "✅ Default shell set to zsh."
   fi
+else
+  echo "✅ Shell already set to zsh."
 fi

@@ -9,7 +9,13 @@ sudo() {
   fi
 }
 
+echo ""
+echo "🌱 STEP 1/6: Installing essential packages..."
+echo ""
+
 {{ if .is_arch -}}
+echo "🖥️  Installing essentials via pacman (Arch)..."
+
 # Install essential packages for Arch
 sudo pacman -Sy --noconfirm \
   git \
@@ -20,6 +26,8 @@ sudo pacman -Sy --noconfirm \
   unzip
 
 {{ else if .is_ubuntu -}}
+echo "🖥️  Installing essentials via apt (Ubuntu/Debian)..."
+
 # Install essential packages for Ubuntu/Debian
 sudo apt update
 sudo env DEBIAN_FRONTEND=noninteractive apt install --yes \
@@ -35,6 +43,7 @@ sudo env DEBIAN_FRONTEND=noninteractive apt install --yes \
 # Install yay on Arch if not present
 {{ if .is_arch -}}
 if ! command -v yay >/dev/null 2>&1; then
+  echo "🛠️  Installing yay (AUR helper)..."
   sudo pacman -S --noconfirm --needed git base-devel
   git clone https://aur.archlinux.org/yay.git /tmp/yay
 
@@ -51,5 +60,9 @@ if ! command -v yay >/dev/null 2>&1; then
 
   rm -rf /tmp/yay
   unset BUILD_USER
+  echo "✅ yay installed successfully."
 fi
 {{ end -}}
+
+echo "✅ Essentials done."
+echo ""
