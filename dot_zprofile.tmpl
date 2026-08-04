@@ -2,8 +2,9 @@
 {{- if eq .chassisType "notebook" }}
 # Launch Hyprland via UWSM when logging in on a TTY.
 # See https://wiki.hypr.land/Useful-Utilities/Systemd-start/#in-tty
-if uwsm check may-start; then
-	exec uwsm start hyprland.desktop
+
+if uwsm check may-start && uwsm select; then
+	exec uwsm start default
 fi
 {{- end }}
 {{ end -}}
