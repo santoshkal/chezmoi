@@ -22,13 +22,37 @@ fi
 
 echo "✅ Laptop with NVIDIA GPU detected. Proceeding..."
 
-echo "🛠️  Installing NVIDIA driver packages..."
+GPU_LINE="$(lspci | grep -i nvidia | head -1)"
+CHIPSET="$(echo "$GPU_LINE" | grep -ioE 'nvidia corporation [a-z0-9]+' | head -1 | awk '{print $3}')"
+echo "   GPU: $GPU_LINE"
+
+case "$CHIPSET" in
+  GP*|GM*|GV*)
+    NVIDIA_KMOD="akmod-nvidia-580xx"
+    NVIDIA_X="xorg-x11-drv-nvidia-580xx"
+    NVIDIA_CUDA="xorg-x11-drv-nvidia-580xx-cuda"
+    echo "⚠️  GPU is Maxwell/Pascal/Volta ($CHIPSET) - using legacy 580xx driver branch."
+    echo "   The default 595 driver on Fedora 44 dropped support for these GPUs."
+    ;;
+  *)
+    NVIDIA_KMOD="akmod-nvidia"
+    NVIDIA_X="xorg-x11-drv-nvidia"
+    NVIDIA_CUDA="xorg-x11-drv-nvidia-cuda"
+    echo "ℹ️  GPU is Turing or newer ($CHIPSET) - using current driver branch."
+    ;;
+esac
+
+echo "🛠️  Installing NVIDIA driver packages ($NVIDIA_KMOD)..."
 sudo dnf install -y \
-  akmod-nvidia \
-  xorg-x11-drv-nvidia-cuda \
+  "$NVIDIA_KMOD" \
+  "$NVIDIA_X" \
+  "$NVIDIA_CUDA" \
   nvidia-vaapi-driver \
   egl-wayland \
   xorg-x11-server-Xwayland
+
+echo "📌 Pinning NVIDIA packages to avoid dnf swapping to the 595 branch..."
+sudo dnf mark user "$NVIDIA_KMOD" "$NVIDIA_X" "$NVIDIA_CUDA" 2>/dev/null || true
 
 echo "🔑 Checking Secure Boot state..."
 if mokutil --sb-state 2>/dev/null | grep -qi "enabled"; then

@@ -1,0 +1,9 @@
+{{ if and .is_fedora .chassisType -}}
+{{- if eq .chassisType "notebook" }}
+# Launch Hyprland via UWSM when logging in on a TTY.
+# See https://wiki.hypr.land/Useful-Utilities/Systemd-start/#in-tty
+if uwsm check may-start; then
+	exec uwsm start hyprland.desktop
+fi
+{{- end }}
+{{ end -}}

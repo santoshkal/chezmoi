@@ -35,9 +35,20 @@ stack afterwards.
 
 - Set BIOS to **Hybrid Graphics** (Intel iGPU + NVIDIA dGPU).
 - **Secure Boot**: either disable it, or keep it enabled and enroll a MOK key
-  before installing `akmod-nvidia` (see https://rpmfusion.org/Howto/NVIDIA).
+  before installing `akmod-nvidia-580xx` (see https://rpmfusion.org/Howto/NVIDIA).
 - The NVIDIA setup script runs automatically on laptops
   (`run_once_after_40-configure-nvidia.sh.tmpl`, gated on `chassisType=notebook`).
+
+### NVIDIA driver branch — IMPORTANT for the P1000
+
+The Quadro P1000 is a **Pascal** GPU. Fedora 44 ships the **595.x** driver by
+default, which **dropped support for Maxwell/Pascal/Volta GPUs**. The install
+script detects the chipset and uses the **legacy `akmod-nvidia-580xx`** branch
+instead, and pins the packages with `dnf mark user` so dnf can't swap back to
+595 on update.
+
+The 580xx packages are only in the full `rpmfusion-nonfree` repo (not
+`rpmfusion-nonfree-nvidia-driver`), which the `10-packages` script enables.
 
 ## 3. Post-Installation Checks
 
@@ -46,10 +57,17 @@ Run these in order to verify everything works.
 ### 3.1 NVIDIA driver
 
 ```bash
-nvidia-smi                # shows GPU + driver version
+nvidia-smi                # shows GPU + driver version (expect 580.xxx)
 lspci | grep -i nvidia    # GPU detected
 cat /sys/module/nvidia_drm/parameters/modeset   # must print Y
+
+# Confirm you are on the legacy 580xx branch, NOT the 595 driver:
+dnf list installed 'akmod-nvidia*'
+dnf versionlock list 2>/dev/null || dnf mark user    # 580xx should be pinned
 ```
+
+If `nvidia-smi` shows a 595.x driver, the module is wrong for a Pascal GPU —
+reinstall with `sudo dnf install akmod-nvidia-580xx xorg-x11-drv-nvidia-580xx-cuda`.
 
 ### 3.2 Secure Boot / MOK
 
